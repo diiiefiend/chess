@@ -1,4 +1,5 @@
 require_relative 'piece.rb'
+require 'byebug'
 
 class Pawn < Piece
 
@@ -28,16 +29,22 @@ class Pawn < Piece
   def moves
     moves = []
     x, y = pos
+    # deltas = movedirs
+    # fwd_pos = [x+deltas[0][0], y+deltas[0][1]]
+    # moves << fwd_pos if board.in_bounds?(fwd_pos) &&
+    #   !board.occupied_by_team?(fwd_pos, color)
+    #
     move_dirs.each_with_index do |(dx, dy), idx|
+      #debugger
       new_pos = [x + dx, y + dy]
       case idx
       when 0       #standard one space forward move
         if board.in_bounds?(new_pos) && !board.occupied_by_team?(new_pos, color)
           moves << new_pos
         end
-        moves << new_pos * 2 if move_count == 0
+        moves << [x + 2*dx, y] if move_count == 0
       when 1, 2
-        moves << new_pos if board.capturable?(new_pos)
+        moves << new_pos if board.capturable?(new_pos, color)
       end
     end
 

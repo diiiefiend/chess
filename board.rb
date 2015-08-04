@@ -44,12 +44,29 @@ class Board
   end
 
   def occupied_by_team?(pos, color)
-    occupied?(pos) && board[pos].color == color
+    occupied?(pos) && self[pos].color == color
+  end
+
+  def capturable?(target_pos, color)
+    occupied?(target_pos) && self[target_pos].color != color
+  end
+
+  def move(start, end_pos)
+    if self[start].nil?
+      raise MissingPieceError.new ("There is no piece there?!!")
+    end
+
+    unless self[start].moves.include?(end_pos)
+      raise InvalidMoveError.new ("You can't move there!!!")
+    end
+
+    self[end_pos] = self[start]
+    self[start] = nil
   end
 
   private
   def populate_grid(color)
-    if color == :w
+    if color == :b
       rows = [1, 0]
     else
       rows = [6, 7]
@@ -66,4 +83,10 @@ class Board
     end
 
   end
+end
+
+class MissingPieceError < StandardError
+end
+
+class InvalidMoveError < StandardError
 end
