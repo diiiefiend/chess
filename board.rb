@@ -13,4 +13,13 @@ class Board
   def [](pos)
     x, y = pos
     grid[x][y]
+  end
+
+  def occupied?(pos)
+    !self[pos].nil?
+  end
+
+  def occupied_by_team?(pos, color)
+    occupied?(pos) && board[pos].color == color
+  end
 end
