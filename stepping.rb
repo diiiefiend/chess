@@ -1,4 +1,5 @@
 require_relative 'piece.rb'
+require 'byebug'
 
 class SteppingPiece < Piece
   attr_reader :move_direction, :board
@@ -33,6 +34,7 @@ class SteppingPiece < Piece
   end
 
   def moves
+    #debugger if pos == [2, 0]
     moves = []
     x, y = pos
     move_dirs.each do |(dx, dy)|

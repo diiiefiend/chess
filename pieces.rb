@@ -11,7 +11,8 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    "B"
+    checkmark = "\u265D"
+    checkmark.encode('utf-8')
   end
 
 end
@@ -26,7 +27,8 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    "R"
+    checkmark = "\u265C"
+    checkmark.encode('utf-8')
   end
 end
 
@@ -40,7 +42,8 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    "Q"
+    checkmark = "\u265B"
+    checkmark.encode('utf-8')
   end
 end
 
@@ -54,7 +57,8 @@ class King < SteppingPiece
   end
 
   def to_s
-    "K"
+    checkmark = "\u265A"
+    checkmark.encode('utf-8')
   end
 end
 
@@ -68,6 +72,7 @@ class Knight < SteppingPiece
   end
 
   def to_s
-    "H"
+    checkmark = "\u265E"
+    checkmark.encode('utf-8')
   end
 end

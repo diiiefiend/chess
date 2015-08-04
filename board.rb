@@ -60,6 +60,7 @@ class Board
       raise InvalidMoveError.new ("You can't move there!!!")
     end
 
+    self[start].pos = end_pos
     self[end_pos] = self[start]
     self[start] = nil
   end

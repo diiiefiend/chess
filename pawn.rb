@@ -52,6 +52,7 @@ class Pawn < Piece
   end
 
   def to_s
-    "P"
+    checkmark = "\u265F"
+    checkmark.encode('utf-8')
   end
 end
