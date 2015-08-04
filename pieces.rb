@@ -1,5 +1,5 @@
-require_relative "sliding.rb"
-require_relative "stepping.rb"
+require_relative 'stepping.rb'
+require_relative 'sliding.rb'
 
 class Bishop < SlidingPiece
   def initialize(pos, color, board)

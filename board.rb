@@ -1,14 +1,15 @@
-require_relative "pieces.rb"
+require_relative 'pieces.rb'
+require_relative 'pawn.rb'
 
 class Board
   BOARD_SIZE = 8
-  #OPENING_ROW = [Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook]
+  OPENING_ROW = [Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook]
   attr_reader :grid
 
   def initialize
     @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
-    #populate_grid(:w)
-    #populate_grid(:b)
+    populate_grid(:w)
+    populate_grid(:b)
     p @grid
   end
 
@@ -19,6 +20,11 @@ class Board
   def [](pos)
     x, y = pos
     grid[x][y]
+  end
+
+  def []=(pos, piece)
+    x, y = pos
+    grid[x][y] = piece
   end
 
   def occupied?(pos)
@@ -39,15 +45,13 @@ class Board
 
     #place pawns
     grid[rows[0]].each_with_index do |tile, col|
-      tile = Pawn.new([rows[0], col], color, self)
+      self[[rows[0], col]] = Pawn.new([rows[0], col], color, self)
     end
 
     #place special pieces
     grid[rows[1]].each_with_index do |tile, col|
-      tile = OPENING_ROW[col].new([rows[1], col], color, self)
+      self[[rows[1], col]] = OPENING_ROW[col].new([rows[1], col], color, self)
     end
+
   end
 end
-
-board = Board.new
-p = Bishop.new([2,2], :w, board)

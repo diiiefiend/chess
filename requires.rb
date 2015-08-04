@@ -1,0 +1,6 @@
+require_relative 'piece.rb'
+require_relative 'pawn.rb'
+require_relative 'sliding.rb'
+require_relative 'stepping.rb'
+require_relative 'pieces.rb'
+require_relative 'board.rb'

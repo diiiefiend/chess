@@ -1,5 +1,3 @@
-require_relative "board.rb"
-
 class Piece
   attr_reader :pos, :color, :board
 

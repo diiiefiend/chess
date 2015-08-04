@@ -1,5 +1,4 @@
-require_relative "piece.rb"
-require "byebug"
+require_relative 'piece.rb'
 
 class SlidingPiece < Piece
   DIAGONAL_DELTA = [

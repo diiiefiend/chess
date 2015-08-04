@@ -1,4 +1,4 @@
-require_relative "piece.rb"
+require_relative 'piece.rb'
 
 class SteppingPiece < Piece
   attr_reader :move_direction, :board
@@ -24,18 +24,6 @@ class SteppingPiece < Piece
     [ 1,  1]
   ]
 
-  PAWN_MOVES_BLACK = [
-    [ 1, -1],
-    [ 1,  0],
-    [ 1,  1]
-  ]
-
-  PAWN_MOVES_WHITE = [
-    [-1, -1],
-    [-1,  0],
-    [-1,  1]
-  ]
-
   def initialize(pos, color, board, move_direction)
     super(pos, color, board)
     @move_direction = move_direction
@@ -51,7 +39,6 @@ class SteppingPiece < Piece
       new_pos = [x + dx, y + dy]
       if board.in_bounds?(new_pos) && !board.occupied_by_team?(new_pos, color)
         moves << new_pos
-        new_pos = [x + dx, y + dy]
       end
     end
 
