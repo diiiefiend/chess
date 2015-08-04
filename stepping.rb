@@ -24,6 +24,18 @@ class SteppingPiece < Piece
     [ 1,  1]
   ]
 
+  PAWN_MOVES_BLACK = [
+    [ 1, -1],
+    [ 1,  0],
+    [ 1,  1]
+  ]
+
+  PAWN_MOVES_WHITE = [
+    [-1, -1],
+    [-1,  0],
+    [-1,  1]
+  ]
+
   #move_direction values: :h, :k
   def initialize(pos, color, board, move_direction)
     super(pos, color, board)
@@ -36,8 +48,10 @@ class SteppingPiece < Piece
       HORSE_MOVES
     when :k                   #king
       KING_MOVES
-    #else                      #pawn
-    #  LATERAL_DELTA + DIAGONAL_DELTA
+    when :pb                   #black(top) pawn
+      PAWN_MOVES_BLACK
+    when :pw                   #white(bottom) pawn
+      PAWN_MOVES_WHITE
     end
   end
 
