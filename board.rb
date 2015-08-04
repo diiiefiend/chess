@@ -1,15 +1,20 @@
 require_relative 'pieces.rb'
 require_relative 'pawn.rb'
+require 'byebug'
 
 class Board
   BOARD_SIZE = 8
-  OPENING_ROW = [Rook, Knight, Bishop, King, Queen, Bishop, Knight, Rook]
+  OPENING_ROW = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
   attr_reader :grid
 
-  def initialize
-    @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
-    populate_grid(:w)
-    populate_grid(:b)
+  def initialize(grid = nil)
+    if grid.nil?
+      @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
+      populate_grid(:w)
+      populate_grid(:b)
+    else
+      @grid = grid
+    end
   end
 
   def in_bounds?(pos)
@@ -52,17 +57,38 @@ class Board
   end
 
   def move(start, end_pos)
-    if self[start].nil?
+    current_piece = self[start]
+    if current_piece.nil?
       raise MissingPieceError.new ("There is no piece there?!!")
     end
 
-    unless self[start].moves.include?(end_pos)
+    unless current_piece.moves.include?(end_pos)
       raise InvalidMoveError.new ("You can't move there!!!")
     end
 
-    self[start].pos = end_pos
-    self[end_pos] = self[start]
+    unless current_piece.valid_moves(start, end_pos).include?(end_pos)
+      raise CheckError.new ("You will get checked!!!")
+    end
+
+    current_piece.pos = end_pos
+    self[end_pos] = current_piece
     self[start] = nil
+  end
+
+  def in_check?(color)
+    total_moves = []
+
+    grid.flatten.select do |piece|
+      !piece.nil? && piece.color != color
+    end.each do |enemy_piece|
+      total_moves += enemy_piece.moves
+    end
+
+    total_moves.include?(king_index(color))
+  end
+
+  def deep_dup
+    b = Board.new(dd_arr(grid))
   end
 
   private
@@ -82,7 +108,16 @@ class Board
     grid[rows[1]].each_with_index do |tile, col|
       self[[rows[1], col]] = OPENING_ROW[col].new([rows[1], col], color, self)
     end
+  end
 
+  def king_index(color)
+    idx = grid.flatten.index {|piece| piece.is_a?(King) && piece.color == color}
+    row, col = (idx / BOARD_SIZE), (idx % BOARD_SIZE)
+    [row, col]
+  end
+
+  def dd_arr(arr)
+    arr.map { |el| el.is_a?(Array) ? dd_arr(el) : el }
   end
 end
 
@@ -90,4 +125,7 @@ class MissingPieceError < StandardError
 end
 
 class InvalidMoveError < StandardError
+end
+
+class CheckError < StandardError
 end
