@@ -2,7 +2,7 @@ require_relative "piece.rb"
 
 class SteppingPiece < Piece
   attr_reader :move_direction, :board
-  HORSE_MOVES = [
+  KNIGHT_DELTA = [
     [-2, -1],
     [-2,  1],
     [-1, -2],
@@ -13,7 +13,7 @@ class SteppingPiece < Piece
     [ 2,  1]
   ]
 
-  KING_MOVES = [
+  KING_DELTA = [
     [-1, -1],
     [-1,  0],
     [-1,  1],
@@ -36,23 +36,12 @@ class SteppingPiece < Piece
     [-1,  1]
   ]
 
-  #move_direction values: :h, :k
   def initialize(pos, color, board, move_direction)
     super(pos, color, board)
     @move_direction = move_direction
   end
 
   def move_dirs
-    case move_direction
-    when :h                  #horse
-      HORSE_MOVES
-    when :k                   #king
-      KING_MOVES
-    when :pb                   #black(top) pawn
-      PAWN_MOVES_BLACK
-    when :pw                   #white(bottom) pawn
-      PAWN_MOVES_WHITE
-    end
   end
 
   def moves

@@ -1,4 +1,5 @@
 require_relative "piece.rb"
+require "byebug"
 
 class SlidingPiece < Piece
   DIAGONAL_DELTA = [
@@ -16,21 +17,12 @@ class SlidingPiece < Piece
 
   attr_reader :move_direction, :board
 
-  #move_direction values: :l, :d
   def initialize(pos, color, board, move_direction)
     super(pos, color, board)
     @move_direction = move_direction
   end
 
   def move_dirs
-    case move_direction
-    when :l                   #rook
-      LATERAL_DELTA
-    when :d                   #bishop
-      DIAGONAL_DELTA
-    else                      #queen
-      LATERAL_DELTA + DIAGONAL_DELTA
-    end
   end
 
   def moves
