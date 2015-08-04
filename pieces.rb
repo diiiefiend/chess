@@ -9,6 +9,11 @@ class Bishop < SlidingPiece
   def move_dirs
     DIAGONAL_DELTA
   end
+
+  def to_s
+    "B"
+  end
+
 end
 
 class Rook < SlidingPiece
@@ -18,6 +23,10 @@ class Rook < SlidingPiece
 
   def move_dirs
     LATERAL_DELTA
+  end
+
+  def to_s
+    "R"
   end
 end
 
@@ -29,6 +38,10 @@ class Queen < SlidingPiece
   def move_dirs
     LATERAL_DELTA + DIAGONAL_DELTA
   end
+
+  def to_s
+    "Q"
+  end
 end
 
 class King < SteppingPiece
@@ -39,6 +52,10 @@ class King < SteppingPiece
   def move_dirs
     KING_DELTA
   end
+
+  def to_s
+    "K"
+  end
 end
 
 class Knight < SteppingPiece
@@ -48,5 +65,9 @@ class Knight < SteppingPiece
 
   def move_dirs
     KNIGHT_DELTA
+  end
+
+  def to_s
+    "H"
   end
 end

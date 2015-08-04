@@ -10,7 +10,6 @@ class Board
     @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
     populate_grid(:w)
     populate_grid(:b)
-    p @grid
   end
 
   def in_bounds?(pos)
@@ -25,6 +24,19 @@ class Board
   def []=(pos, piece)
     x, y = pos
     grid[x][y] = piece
+  end
+
+  def render
+    puts "   0 1 2 3 4 5 6 7"
+    puts "   ---------------"
+    grid.each_with_index do |row, idx|
+      print "#{idx}: "
+      row.each do |tile|
+        tile.nil? ? (print "_ ") : (print tile.to_s + " ")
+      end
+      print "\n"
+    end
+    print "\n\n"
   end
 
   def occupied?(pos)
