@@ -12,7 +12,7 @@ class SlidingPiece < Piece
     [0, -1]
   ]
 
-  attr_reader :move_direction
+  attr_reader :move_direction, :board
 
   #move_direction values: :l, :d
   def initialize(pos, color, board, move_direction)
@@ -21,7 +21,7 @@ class SlidingPiece < Piece
   end
 
   def move_dirs
-    direction_arr = case move_direction
+    case move_direction
     when :l                   #rook
       LATERAL_DELTA
     when :d                   #bishop
@@ -29,13 +29,15 @@ class SlidingPiece < Piece
     else                      #queen
       LATERAL_DELTA + DIAGONAL_DELTA
     end
+  end
 
+  def moves
     directions = []
     x, y = pos
-    direction_arr.each do |(dx, dy)|
+    move_dirs.each do |(dx, dy)|
       new_pos = [x+dx, y+dy]
       d_multi = 1
-      until !board.in_bounds?(new_pos)
+      until !board.in_bounds?(new_pos) || !board[new_pos].nil?
         directions << new_pos
         d_multi += 1
         new_pos = [x+(dx * d_multi), y+(dy * d_multi)]
@@ -45,7 +47,4 @@ class SlidingPiece < Piece
     directions
   end
 
-  def moves
-
-  end
 end
