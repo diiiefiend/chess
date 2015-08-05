@@ -36,8 +36,7 @@ class SteppingPiece < Piece
 
     move_dirs.each do |(dx, dy)|
       new_pos = [x + dx, y + dy]
-      if board.in_bounds?(new_pos) &&
-        !board.occupied_by_team?(new_pos, color)
+      if board.in_bounds?(new_pos) && !board.occupied?(new_pos)
         moves << new_pos
       end
     end

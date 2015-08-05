@@ -27,8 +27,7 @@ class SlidingPiece < Piece
     move_dirs.each do |(dx, dy)|
       new_pos = [x+dx, y+dy]
       d_multi = 1
-      until !board.in_bounds?(new_pos) ||
-        board.occupied_by_team?(new_pos, color)
+      until !board.in_bounds?(new_pos) || board.occupied?(new_pos)
 
         moves << new_pos
         d_multi += 1
