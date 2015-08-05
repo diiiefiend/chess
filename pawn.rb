@@ -52,7 +52,8 @@ class Pawn < Piece
   end
 
   def to_s
-    checkmark = "\u265F"
+    images = {:w => "\u2659", :b => "\u265F"}
+    checkmark = images[color]
     checkmark.encode('utf-8')
   end
 end
