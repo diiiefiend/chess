@@ -31,18 +31,27 @@ class Pawn < Piece
     x, y = pos
     move_dirs.each_with_index do |(dx, dy), idx|
       new_pos = [x + dx, y + dy]
+      double_move = [x + 2*dx, y]
       case idx
-      when 0       #standard one space forward move
-        if board.in_bounds?(new_pos) && !board.occupied?(new_pos)
-          moves << new_pos
-        end
-        double_move = [x + 2*dx, y]
-        if move_count == 0 && !board.occupied?(double_move)
-          moves << double_move
-        end
+      when 0
+        moves += standard_move(new_pos, double_move)
       when 1, 2
         moves << new_pos if board.capturable?(new_pos, color)
       end
+    end
+
+    moves
+  end
+
+  def standard_move(new_pos, double_move)
+    moves = []
+
+    if board.in_bounds?(new_pos) && !board.occupied?(new_pos)
+      moves << new_pos
+    end
+
+    if move_count == 0 && !board.occupied?(double_move)
+      moves << double_move
     end
 
     moves

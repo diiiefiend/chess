@@ -48,9 +48,7 @@ class Board
     check_for_errors(current_piece, end_pos, color)
     @graveyard << self[end_pos] if !self[end_pos].nil?
 
-    current_piece.pos = end_pos
-    self[end_pos] = current_piece
-    self[start] = nil
+    test_move(start, end_pos)
   end
 
   def test_move(start_pos, end_pos)
@@ -98,15 +96,19 @@ class Board
     else
       rows = [6, 7]
     end
+    place_pawns(rows[0], color)
+    place_special_pieces(rows[1], color)
+  end
 
-    #place pawns
-    grid[rows[0]].each_with_index do |tile, col|
-      self[[rows[0], col]] = Pawn.new([rows[0], col], color, self)
+  def place_pawns(row, color)
+    grid[row].each_with_index do |tile, col|
+      self[[row, col]] = Pawn.new([row, col], color, self)
     end
+  end
 
-    #place special pieces
-    grid[rows[1]].each_with_index do |tile, col|
-      self[[rows[1], col]] = OPENING_ROW[col].new([rows[1], col], color, self)
+  def place_special_pieces(row, color)
+    grid[row].each_with_index do |tile, col|
+      self[[row, col]] = OPENING_ROW[col].new([row, col], color, self)
     end
   end
 
