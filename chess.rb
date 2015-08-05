@@ -17,7 +17,7 @@ class Game
       switch_player
       board.render
       move_piece
-      sleep(0)
+      sleep(1)
       system("clear")
     end
 
@@ -29,6 +29,7 @@ class Game
   def move_piece
     begin
       start_input, end_input = current_player.play_turn
+      p [start_input, end_input]
       board.move(start_input, end_input, current_player.color)
     rescue MissingPieceError => e
       puts e.message

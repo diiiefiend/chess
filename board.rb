@@ -30,7 +30,7 @@ class Board
     grid.each_with_index do |row, idx|
       print "#{idx} "
       row.each_with_index do |tile, idy|
-        bg_color = ((idx + idy).even? ? :light_white : :light_yellow)
+        bg_color = ((idx + idy).even? ? :light_green : :light_red)
         output = tile.nil? ? "  " : tile.to_s + " "
         print output.colorize(:background => bg_color)
       end

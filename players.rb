@@ -44,14 +44,7 @@ class ComputerPlayer
   end
 
   def play_turn
-    moves = all_valid_moves
-    piece = moves.keys.sample
-
-    start_input = piece.pos
-    end_input = moves[piece].sample
-
-    p [start_input, end_input]
-    [start_input, end_input]
+    best_move
   end
 
   def all_valid_moves
@@ -64,6 +57,29 @@ class ComputerPlayer
     end
 
     moves
+  end
+
+  def best_move
+    all_moves = all_valid_moves
+    moves = []
+    possible_end_points = all_moves.values.flatten.each_slice(2).to_a
+    possible_end_points.each do |move|
+      moves << move if board.capturable?(move, color)
+    end
+
+    if moves.empty?
+      piece = all_moves.keys.sample
+
+      start_input = piece.pos
+      end_input = all_moves[piece].sample
+    else
+      end_input = moves.sample
+      start_input = all_moves.select do |k, v|
+        v.include?(end_input)
+      end.keys.first.pos
+    end
+
+    [start_input, end_input]
   end
 end
 
