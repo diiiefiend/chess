@@ -6,30 +6,30 @@ class Piece
      @pos, @color, @board = pos, color, board
    end
 
-   def dup
-     copy = Piece.new(self.pos, self.color, self.board)
-   end
-
    def moves
    end
 
-   def valid_moves
-     duped_board = board.deep_dup
+    def valid_moves
+      starting_pos = pos
 
-     valid_moves = []
-     moves.each do |move|
-       next if move.nil?
-       duped_piece = duped_board[pos]
-       duped_piece.pos = move
-       duped_board[move] = duped_piece
+      valid_moves = []
+      moves.each do |move|
+        piece = board[starting_pos]
+        piece.pos = move
+        board[move] = piece
+        board[starting_pos] = nil
+        
+        unless board.in_check?(color)
+          valid_moves << move
+        end
 
-       unless duped_board.in_check?(color)
-         valid_moves << move
-       end
-     end
+        piece.pos = starting_pos
+        board[starting_pos] = piece
+        board[move] = nil
+      end
 
-     valid_moves
-   end
+      valid_moves
+    end
 
    def inspect
      to_s + " " + pos.join(", ") + " " + color.to_s

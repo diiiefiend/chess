@@ -71,26 +71,22 @@ class Board
 
   def checkmate?(color)
     checked = in_check?(color)
-    #no_valid_moves =  all_pieces(color).all?{ |piece| piece.valid_moves.empty? }
-    all_pieces(color).each do |piece|
-      puts "#{piece}'s POSITION: "
-      p piece.pos
-      puts "#{piece}'s MOVES: "
-      p piece.moves
-      puts "#{piece}'s VALID MOVES: "
-      p piece.valid_moves
-    end
-    result = [checked, false]
+    no_valid_moves =  all_pieces(color).all?{ |piece| piece.valid_moves.empty? }
+    # all_pieces(color).each do |piece|
+    #   puts "#{piece}'s POSITION: "
+    #   p piece.pos
+    #   puts "#{piece}'s MOVES: "
+    #   p piece.moves
+    #   puts "#{piece}'s VALID MOVES: "
+    #   p piece.valid_moves
+    # end
+    result = [checked, no_valid_moves]
     result
   end
 
   def all_pieces(color)
     a = grid.flatten.select {|piece| !piece.nil? && piece.color == color}
     a
-  end
-
-  def deep_dup
-    b = Board.new(dd_arr(grid))
   end
 
   def occupied?(pos)
@@ -132,29 +128,6 @@ class Board
     idx = grid.flatten.index {|piece| piece.is_a?(King) && piece.color == color}
     row, col = (idx / BOARD_SIZE), (idx % BOARD_SIZE)
     [row, col]
-  end
-
-  def dd_arr(arr)
-    grid_copy = []
-    arr.each do |row|
-      row_copy = []
-      row.each do |tile|
-        row_copy << (tile.nil? ? nil : tile.dup)
-      end
-      grid_copy << row_copy
-    end
-    grid_copy
-
-    p grid_copy
-    # arr.map do |el|
-    #   if el.is_a?(Array)
-    #     dd_arr(el)
-    #   elsif el.nil?
-    #     nil
-    #   else
-    #     el.dup
-    #   end
-    # end
   end
 
   def switch_color(color)
