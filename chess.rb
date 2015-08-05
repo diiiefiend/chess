@@ -2,39 +2,54 @@ require_relative 'requires.rb'
 require "byebug"
 
 class Game
-  attr_reader :board
+  attr_reader :board, :white, :black, :current_player
 
   def initialize
     @board = Board.new
-    @current_player = :w
+    @white = HumanPlayer.new(:w)
+    @black = HumanPlayer.new(:b)
+    @current_player = @black
   end
 
   def play
+    system("clear")
     until over?
-      board.render
-      puts "Enter starting input #{current_player}"
-      start_input = get_input
-      puts "Enter destination input #{current_player}"
-      end_input = get_input
-      board.move(start_input, end_input)
       switch_player
+      board.render
+      move_piece
+      system("clear")
     end
 
     board.render
-    puts "Congratulations #{switch_player}!!!!!!!"
+    puts "Congratulations #{current_player.color}!!!!!!!"
+  end
+
+  private
+  def move_piece
+    begin
+      start_input, end_input = current_player.play_turn
+      board.move(start_input, end_input, current_player.color)
+    rescue MissingPieceError => e
+      puts e.message
+      retry
+    rescue OthersPieceError => e
+      puts e.message
+      retry
+    rescue InvalidMoveError => e
+      puts e.message
+      retry
+    rescue CheckError => e
+      puts e.message
+      retry
+    end
   end
 
   def switch_player
-    (@current_player == :w) ? :b : :w
+    (@current_player == white) ? (@current_player = black) : (@current_player = white)
   end
 
   def over?
-    board.checkmate?(:w) || board.checkmate?(:b)
-  end
-
-  def get_input
-    puts "Which piece do you want to move? (format: x,y)"
-    gets.chomp.split(",").map(&:to_i)
+    board.checkmate?(white.color) || board.checkmate?(black.color)
   end
 end
 

@@ -6,6 +6,7 @@ class Board
   BOARD_SIZE = 8
   OPENING_ROW = [Rook, Knight, Bishop, Queen, King, Bishop, Knight, Rook]
   attr_reader :grid
+  attr_accessor :graveyard
 
   def initialize(grid = nil)
     if grid.nil?
@@ -15,6 +16,7 @@ class Board
     else
       @grid = grid
     end
+    @graveyard = []
   end
 
   def [](pos)
@@ -31,19 +33,28 @@ class Board
     puts "   0 1 2 3 4 5 6 7"
     puts "   ---------------"
     grid.each_with_index do |row, idx|
-      print "#{idx}: "
+      print "#{idx}| "
       row.each do |tile|
         tile.nil? ? (print "_ ") : (print tile.to_s + " ")
       end
       print "\n"
     end
     print "\n\n"
+    w = graveyard.select{|piece| piece.color == :b}
+    b = graveyard.select{|piece| piece.color == :w}
+    puts "white: #{w.each(&:to_s)}"
+    puts "black: #{b.each(&:to_s)}"
   end
 
-  def move(start, end_pos)
+  def move(start, end_pos, color)
     current_piece = self[start]
+
     if current_piece.nil?
       raise MissingPieceError.new ("There is no piece there?!!")
+    end
+
+    unless current_piece.color == color
+      raise OthersPieceError.new ("Not your piece...")
     end
 
     unless current_piece.moves.include?(end_pos)
@@ -53,6 +64,8 @@ class Board
     unless current_piece.valid_moves.include?(end_pos)
       raise CheckError.new ("You will get checked!!!")
     end
+
+    @graveyard << self[end_pos] if !self[end_pos].nil?
 
     current_piece.pos = end_pos
     self[end_pos] = current_piece
@@ -79,14 +92,6 @@ class Board
   def checkmate?(color)
     in_check?(color) &&
       all_pieces(color).all?{ |piece| piece.valid_moves.empty? }
-    # all_pieces(color).each do |piece|
-    #   puts "#{piece}'s POSITION: "
-    #   p piece.pos
-    #   puts "#{piece}'s MOVES: "
-    #   p piece.moves
-    #   puts "#{piece}'s VALID MOVES: "
-    #   p piece.valid_moves
-    # end
   end
 
   def occupied?(pos)
@@ -140,6 +145,9 @@ class Board
 end
 
 class MissingPieceError < StandardError
+end
+
+class OthersPieceError < StandardError
 end
 
 class InvalidMoveError < StandardError

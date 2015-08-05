@@ -11,7 +11,7 @@ class Piece
     valid_moves = []
 
     moves.each do |move|
-      piece = board[starting_pos]
+      piece = board[move]
       board.test_move(starting_pos, move)
 
       unless board.in_check?(color)
@@ -19,6 +19,7 @@ class Piece
       end
 
       board.test_move(move, starting_pos)
+      board[move] = piece
     end
 
     valid_moves
