@@ -59,6 +59,13 @@ class Board
     self[start] = nil
   end
 
+  def test_move(start_pos, end_pos)
+    piece = self[start_pos]
+    piece.pos = end_pos
+    self[end_pos] = piece
+    self[start_pos] = nil
+  end
+
   def in_check?(color)
     total_moves = []
 
@@ -82,11 +89,6 @@ class Board
     # end
     result = [checked, no_valid_moves]
     result
-  end
-
-  def all_pieces(color)
-    a = grid.flatten.select {|piece| !piece.nil? && piece.color == color}
-    a
   end
 
   def occupied?(pos)
@@ -122,6 +124,10 @@ class Board
     grid[rows[1]].each_with_index do |tile, col|
       self[[rows[1], col]] = OPENING_ROW[col].new([rows[1], col], color, self)
     end
+  end
+
+  def all_pieces(color)
+    grid.flatten.select {|piece| !piece.nil? && piece.color == color}
   end
 
   def king_index(color)
