@@ -1,6 +1,5 @@
 require_relative 'pieces.rb'
 require_relative 'pawn.rb'
-require 'byebug'
 
 class Board
   BOARD_SIZE = 8
@@ -8,14 +7,10 @@ class Board
   attr_reader :grid
   attr_accessor :graveyard
 
-  def initialize(grid = nil)
-    if grid.nil?
-      @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
-      populate_grid(:w)
-      populate_grid(:b)
-    else
-      @grid = grid
-    end
+  def initialize
+    @grid = Array.new(BOARD_SIZE) {Array.new(BOARD_SIZE)}
+    populate_grid(:w)
+    populate_grid(:b)
     @graveyard = []
   end
 
@@ -40,6 +35,7 @@ class Board
       print "\n"
     end
     print "\n\n"
+
     w = graveyard.select{|piece| piece.color == :b}
     b = graveyard.select{|piece| piece.color == :w}
     puts "white: #{w.each(&:to_s)}"
@@ -49,22 +45,7 @@ class Board
   def move(start, end_pos, color)
     current_piece = self[start]
 
-    if current_piece.nil?
-      raise MissingPieceError.new ("There is no piece there?!!")
-    end
-
-    unless current_piece.color == color
-      raise OthersPieceError.new ("Not your piece...")
-    end
-
-    unless current_piece.moves.include?(end_pos)
-      raise InvalidMoveError.new ("You can't move there!!!")
-    end
-
-    unless current_piece.valid_moves.include?(end_pos)
-      raise CheckError.new ("You will get checked!!!")
-    end
-
+    check_for_errors(current_piece, end_pos, color)
     @graveyard << self[end_pos] if !self[end_pos].nil?
 
     current_piece.pos = end_pos
@@ -141,6 +122,24 @@ class Board
 
   def switch_color(color)
     color == :w ? :b : :w
+  end
+
+  def check_for_errors(current_piece, end_pos, color)
+    if current_piece.nil?
+      raise MissingPieceError.new ("There is no piece there?!!")
+    end
+
+    unless current_piece.color == color
+      raise OthersPieceError.new ("Not your piece...")
+    end
+
+    unless current_piece.moves.include?(end_pos)
+      raise InvalidMoveError.new ("You can't move there!!!")
+    end
+
+    unless current_piece.valid_moves.include?(end_pos)
+      raise CheckError.new ("You will get checked!!!")
+    end
   end
 end
 

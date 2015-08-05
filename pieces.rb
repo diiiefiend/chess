@@ -11,9 +11,8 @@ class Bishop < SlidingPiece
   end
 
   def to_s
-    images = {:w => "\u2657", :b => "\u265D"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[:bishop][idx].encode('utf-8')
   end
 
 end
@@ -28,9 +27,8 @@ class Rook < SlidingPiece
   end
 
   def to_s
-    images = {:w => "\u2656", :b => "\u265C"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[:rook][idx].encode('utf-8')
   end
 end
 
@@ -44,9 +42,8 @@ class Queen < SlidingPiece
   end
 
   def to_s
-    images = {:w => "\u2655", :b => "\u265B"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    PIECE_IMAGES[:queen][idx].encode('utf-8')
   end
 end
 
@@ -60,9 +57,8 @@ class King < SteppingPiece
   end
 
   def to_s
-    images = {:w => "\u2654", :b => "\u265A"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[:king][idx].encode('utf-8')
   end
 end
 
@@ -76,8 +72,7 @@ class Knight < SteppingPiece
   end
 
   def to_s
-    images = {:w => "\u2658", :b => "\u265E"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[:knight][idx].encode('utf-8')
   end
 end

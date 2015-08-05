@@ -1,4 +1,13 @@
 class Piece
+  PIECE_IMAGES = {
+    :bishop => ["\u2657", "\u265D"],
+    :rook => ["\u2656", "\u265C"],
+    :queen => ["\u2655", "\u265B"],
+    :king => ["\u2654", "\u265A"],
+    :knight => ["\u2658", "\u265E"],
+    :pawn => ["\u2659", "\u265F"],
+  }
+
   attr_reader :color, :board
   attr_accessor :pos
 

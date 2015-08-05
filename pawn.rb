@@ -37,7 +37,9 @@ class Pawn < Piece
           moves << new_pos
         end
         double_move = [x + 2*dx, y]
-        moves <<  double_move if move_count == 0 && !board.occupied?(double_move)
+        if move_count == 0 && !board.occupied?(double_move)
+          moves << double_move
+        end
       when 1, 2
         moves << new_pos if board.capturable?(new_pos, color)
       end
@@ -47,8 +49,7 @@ class Pawn < Piece
   end
 
   def to_s
-    images = {:w => "\u2659", :b => "\u265F"}
-    checkmark = images[color]
-    checkmark.encode('utf-8')
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[:pawn][idx].encode('utf-8')
   end
 end
