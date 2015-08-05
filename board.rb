@@ -1,5 +1,6 @@
 require_relative 'pieces.rb'
 require_relative 'pawn.rb'
+require 'colorize'
 
 class Board
   BOARD_SIZE = 8
@@ -25,12 +26,14 @@ class Board
   end
 
   def render
-    puts "   0 1 2 3 4 5 6 7"
-    puts "   ---------------"
+    puts "  0 1 2 3 4 5 6 7"
     grid.each_with_index do |row, idx|
-      print "#{idx}| "
-      row.each do |tile|
-        tile.nil? ? (print "_ ") : (print tile.to_s + " ")
+      print "#{idx} "
+      row.each_with_index do |tile, idy|
+        bg_color = ((idx + idy).even? ? :light_white : :light_yellow)
+        output = tile.nil? ? "  " : tile.to_s + " "
+        print output.colorize(:background => bg_color)
+        # tile.nil? ? (print "  ".colorize(:background => bg_color)) : (print tile.to_s + " ".colorize(:background => bg_color))
       end
       print "\n"
     end
