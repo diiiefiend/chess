@@ -47,9 +47,4 @@ class Pawn < Piece
 
     moves
   end
-
-  def to_s
-    idx = (color == :w ? 0 : 1)
-    checkmark = PIECE_IMAGES[:pawn][idx].encode('utf-8')
-  end
 end

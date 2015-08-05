@@ -1,11 +1,13 @@
+require "byebug"
+
 class Piece
   PIECE_IMAGES = {
-    :bishop => ["\u2657", "\u265D"],
-    :rook => ["\u2656", "\u265C"],
-    :queen => ["\u2655", "\u265B"],
-    :king => ["\u2654", "\u265A"],
-    :knight => ["\u2658", "\u265E"],
-    :pawn => ["\u2659", "\u265F"],
+    "Bishop" => ["\u2657", "\u265D"],
+    "Rook" => ["\u2656", "\u265C"],
+    "Queen" => ["\u2655", "\u265B"],
+    "King" => ["\u2654", "\u265A"],
+    "Knight" => ["\u2658", "\u265E"],
+    "Pawn" => ["\u2659", "\u265F"],
   }
 
   attr_reader :color, :board
@@ -36,5 +38,14 @@ class Piece
 
   def inspect
    to_s + " " + pos.join(", ") + " " + color.to_s
+  end
+
+  def to_s
+    idx = (color == :w ? 0 : 1)
+    checkmark = PIECE_IMAGES[self.class.to_s][idx].encode('utf-8')
+  end
+
+  def to_sym
+
   end
 end

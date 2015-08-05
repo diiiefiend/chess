@@ -30,9 +30,6 @@ class SteppingPiece < Piece
     @move_direction = move_direction
   end
 
-  def move_dirs
-  end
-
   def moves
     moves = []
     x, y = pos
