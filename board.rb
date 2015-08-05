@@ -77,8 +77,8 @@ class Board
   end
 
   def checkmate?(color)
-    checked = in_check?(color)
-    no_valid_moves =  all_pieces(color).all?{ |piece| piece.valid_moves.empty? }
+    in_check?(color) &&
+      all_pieces(color).all?{ |piece| piece.valid_moves.empty? }
     # all_pieces(color).each do |piece|
     #   puts "#{piece}'s POSITION: "
     #   p piece.pos
@@ -87,8 +87,6 @@ class Board
     #   puts "#{piece}'s VALID MOVES: "
     #   p piece.valid_moves
     # end
-    result = [checked, no_valid_moves]
-    result
   end
 
   def occupied?(pos)
