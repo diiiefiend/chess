@@ -37,7 +37,7 @@ class Piece
   end
 
   def inspect
-   to_s + " " + pos.join(", ") + " " + color.to_s
+   to_s# + " " + pos.join(", ") + " " + color.to_s
   end
 
   def to_s

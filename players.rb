@@ -36,5 +36,36 @@ class HumanPlayer
   end
 end
 
+class ComputerPlayer
+  attr_reader :color, :board
+
+  def initialize(color, board)
+    @color, @board = color, board
+  end
+
+  def play_turn
+    moves = all_valid_moves
+    piece = moves.keys.sample
+
+    start_input = piece.pos
+    end_input = moves[piece].sample
+
+    p [start_input, end_input]
+    [start_input, end_input]
+  end
+
+  def all_valid_moves
+    moves = {}
+
+    pieces = board.all_pieces(color)
+    pieces.each do |piece|
+      v_moves = piece.valid_moves
+      moves[piece] = v_moves unless v_moves.empty?
+    end
+
+    moves
+  end
+end
+
 class InvalidInputError < StandardError
 end

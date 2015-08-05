@@ -33,7 +33,6 @@ class Board
         bg_color = ((idx + idy).even? ? :light_white : :light_yellow)
         output = tile.nil? ? "  " : tile.to_s + " "
         print output.colorize(:background => bg_color)
-        # tile.nil? ? (print "  ".colorize(:background => bg_color)) : (print tile.to_s + " ".colorize(:background => bg_color))
       end
       print "\n"
     end
@@ -52,6 +51,7 @@ class Board
     @graveyard << self[end_pos] if !self[end_pos].nil?
 
     test_move(start, end_pos)
+    current_piece.move_count += 1 if current_piece.is_a?(Pawn)
   end
 
   def test_move(start_pos, end_pos)
@@ -59,6 +59,10 @@ class Board
     piece.pos = end_pos
     self[end_pos] = piece
     self[start_pos] = nil
+  end
+
+  def all_pieces(color)
+    grid.flatten.select {|piece| !piece.nil? && piece.color == color}
   end
 
   def in_check?(color)
@@ -85,7 +89,9 @@ class Board
   end
 
   def capturable?(target_pos, color)
-    occupied?(target_pos) && self[target_pos].color != color
+    in_bounds?(target_pos) &&
+      occupied?(target_pos) &&
+      self[target_pos].color != color
   end
 
   def in_bounds?(pos)
@@ -113,10 +119,6 @@ class Board
     grid[row].each_with_index do |tile, col|
       self[[row, col]] = OPENING_ROW[col].new([row, col], color, self)
     end
-  end
-
-  def all_pieces(color)
-    grid.flatten.select {|piece| !piece.nil? && piece.color == color}
   end
 
   def king_index(color)

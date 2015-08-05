@@ -1,8 +1,6 @@
 require_relative 'piece.rb'
-require 'byebug'
 
 class Pawn < Piece
-
   PAWN_MOVES_BLACK = [
     [ 1,  0],
     [ 1, -1],
@@ -14,8 +12,7 @@ class Pawn < Piece
     [-1, -1],
     [-1,  1]
   ]
-
-  attr_reader :move_count
+  attr_accessor :move_count
 
   def initialize(pos, color, board)
     super

@@ -6,8 +6,8 @@ class Game
 
   def initialize
     @board = Board.new
-    @white = HumanPlayer.new(:w, @board)
-    @black = HumanPlayer.new(:b, @board)
+    @white = ComputerPlayer.new(:w, @board)
+    @black = ComputerPlayer.new(:b, @board)
     @current_player = @black
   end
 
@@ -17,6 +17,7 @@ class Game
       switch_player
       board.render
       move_piece
+      sleep(0)
       system("clear")
     end
 
